@@ -1,0 +1,27 @@
+executor: slurm
+jobs: 20
+local-cores: 1
+
+use-conda: true
+
+latency-wait: 120
+rerun-incomplete: true
+keep-going: true
+printshellcmds: true
+show-failed-logs: true
+restart-times: 1
+
+max-jobs-per-second: 2
+max-status-checks-per-second: 2
+
+slurm-logdir: /home/jiafzhou/GRN_org/logs/slurm
+slurm-jobname-prefix: pyscenic
+
+default-resources:
+  slurm_account: upzenk
+  slurm_partition: standard
+  mem_mb: 4000
+  runtime: 60
+
+resources:
+  io_slots: 2

@@ -1,0 +1,41 @@
+project_dir: /home/jiafzhou/GRN_org
+
+input_h5ad: /home/jiafzhou/GRN_org/dataset/adata_hvg_dmso-treatment-combined_scANVI_umap_ds_clean.h5ad
+counts_layer: counts
+
+timepoint_column: timepoint
+timepoint_value: d30
+
+drug_column: drug
+celltype_column: "celltype_scANVI_confident"
+
+included_drugs_file: /home/jiafzhou/GRN_org/config/included_drugs.txt
+
+container:
+  pyscenic: /home/jiafzhou/GRN_org/container/pyscenic_0.12.1.sif
+
+resources:
+  tf_list: /home/jiafzhou/GRN_org/resource/allTFs_hg38.txt
+ 
+  ranking_databases:
+    - /home/jiafzhou/GRN_org/resource/hg38__refseq-r80__10kb_up_and_down_tss.mc9nr.genes_vs_motifs.rankings.feather
+    - /home/jiafzhou/GRN_org/resource/hg38__refseq-r80__500bp_up_and_100bp_down_tss.mc9nr.genes_vs_motifs.rankings.feather
+
+  motif_annotations: /home/jiafzhou/GRN_org/resource/motifs-v9-nr.hgnc-m0.001-o0.0.tbl
+
+output_dir: /home/jiafzhou/GRN_org/results
+log_dir: /home/jiafzhou/GRN_org/logs
+benchmark_dir: /home/jiafzhou/GRN_org/benchmarks
+
+pyscenic:
+  method: grnboost2
+  num_workers: 20
+  auc_threshold: 0.05
+
+random_seed: 42
+
+pooled_reference:
+  max_cells_per_drug_celltype: 100
+  random_seed: 42
+
+

@@ -1,0 +1,45 @@
+configfile: "config/config.yaml"
+
+with open(config["included_drugs_file"]) as handle:
+    DRUGS = [
+        line.strip()
+        for line in handle
+        if line.strip()
+    ]
+
+#global params
+
+DRUGS = list(dict.fromkeys(DRUGS))
+
+REFERENCE_DRUGS = [
+    drug
+    for drug in DRUGS
+    if drug != "dmso"
+]
+
+RESULTS = config["output_dir"]
+LOGS = config["log_dir"]
+BENCHMARKS = config["benchmark_dir"]
+
+POOLED = f"{RESULTS}/_pooled_reference_allcells"
+
+
+rule all:
+    input:
+        expand(
+            f"{RESULTS}/{{drug}}/mean_auc_celltype_pooled_allcells_ref.csv",
+            drug=DRUGS,
+        )
+
+
+rule dmso_ref_all:
+    input:
+        expand(
+            f"{RESULTS}/{{drug}}/rss_celltype_dmso_ref.csv",
+            drug=REFERENCE_DRUGS,
+        )
+
+include: "rules/prepare.smk"
+include: "rules/pyscenic.smk"
+include: "rules/downstream.smk"
+include: "rules/pooled.smk"
